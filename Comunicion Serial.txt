@@ -1,0 +1,22 @@
+Ejemplo lectura
+void setup() {
+Serial.begin(9600);
+}
+void loop() {
+if(Serial.available() > 0) {
+char input = Serial.read();
+Serial.print("You escribiste: ");
+Serial.println(input);
+}
+}
+
+
+
+Ejemplo escritura
+void setup() {
+Serial.begin(9600);
+}
+void loop() {
+Serial.write(45);
+int bytesSent = Serial.write("hello");
+}

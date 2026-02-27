@@ -1,0 +1,97 @@
+---------------------------------------------------------------------RECIBE
+byte key = 0x0F;  // MISMA LLAVE
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+
+  if (Serial.available() > 0) {
+
+    byte recibido = Serial.read();
+
+    // Mostrar valor cifrado en decimal
+    Serial.print("Cifrado (dec): ");
+    Serial.println(recibido);
+
+    // Mostrar valor cifrado en binario
+    Serial.print("Cifrado (bin): ");
+    Serial.println(recibido, BIN);
+
+    // Descifrar
+    byte descifrado = recibido ^ key;
+
+    Serial.print("Descifrado: ");
+    Serial.println((char)descifrado);
+
+    Serial.println("-----------------");
+  }
+}
+
+
+--------------------------------------------------------------------------------	ENVIA
+byte key = 0x0F;  // Llave
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+
+  char mensaje[] = "hello";
+
+  for(int i = 0; i < 5; i++) {
+    char cifrado = mensaje[i] ^ key;  
+    Serial.write(cifrado);
+  }
+
+  delay(2000);
+}
+
+
+
+------------------------------------------------------------------------------      SIMULTANEO ENVIA/RECIBE
+
+byte key = 0x0F;  // Llave compartida
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+
+  // ----------- ENVIAR MENSAJE CIFRADO -----------
+  char mensaje[] = "hello";
+
+  Serial.println("Enviando mensaje cifrado:");
+
+  for(int i = 0; i < 5; i++) {
+    char cifrado = mensaje[i] ^ key;  
+    Serial.write(cifrado);
+  }
+
+  Serial.println();
+  Serial.println("-----------------");
+
+  delay(2000);
+
+  // ----------- RECIBIR Y DESCIFRAR -----------
+  while (Serial.available() > 0) {
+
+    byte recibido = Serial.read();
+
+    Serial.print("Cifrado (dec): ");
+    Serial.println(recibido);
+
+    Serial.print("Cifrado (bin): ");
+    Serial.println(recibido, BIN);
+
+    byte descifrado = recibido ^ key;
+
+    Serial.print("Descifrado: ");
+    Serial.println((char)descifrado);
+
+    Serial.println("-----------------");
+  }
+}
